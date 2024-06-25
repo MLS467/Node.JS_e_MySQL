@@ -12,7 +12,7 @@ const conexao = mysql.createConnection({
     user: 'root',
     password: '',
     database: 'projeto_nodejs'
-});
+})
 
 conexao.connect((erro) => {
     if (erro) throw erro;
@@ -35,6 +35,28 @@ app.set('views', './views');
 // ROTAS
 app.get('/', (req, res) => {
     res.render('inicio')
+})
+
+app.post('/cadastrar', (req, res) => {
+    const dados = {
+        nomeProduto: req.body.nomeProduto,
+        valorProduto: req.body.valorProduto,
+        imgNome: req.body.imgNome
+    }
+
+    console.log(dados);
+
+    const vet = Array(null, dados.nomeProduto, dados.valorProduto, dados.imgNome);
+
+    conexao.query("INSERT INTO produtos VALUES (?,?,?,?)", vet, (erro, result) => {
+        if (erro) {
+            console.error("Houve um erro: " + erro);
+        } else {
+            console.log("Cadastro realizado!");
+        }
+    });
+
+    res.redirect('/');
 })
 
 // SERVIDOR

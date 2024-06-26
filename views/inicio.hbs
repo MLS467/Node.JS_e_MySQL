@@ -1,8 +1,28 @@
-<div class="container col-4 offset-4 mt-5" id="container">
-    <form action="/cadastrar" method="post" class="w-100">
+<div class="container-fluid text-dark fixed-top bg-dark">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <svg class="bi me-2" width="40" height="32">
+                <use xlink:href="#bootstrap"></use>
+            </svg>
+            <span class="fs-4 text-light">Simple header</span>
+        </a>
+
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+        </ul>
+    </header>
+</div>
+
+<div class="container col-4 offset-4" id="container">
+    <form action="/cadastrar" method="post" enctype="multipart/form-data" class="w-100">
         <div class="row" id="divPai">
             <input type="text" class="form-control" name="nomeProduto" id="#" placeholder="Nome do Produto">
-            <input type="number" class="form-control" name="valorProduto" id="#" min="0" placeholder="Valor do Produto">
+            <input type="number" class="form-control" step="0.01" name="valorProduto" id="#" min="0"
+                placeholder="Valor do Produto">
             <input class="form-control" type="file" name="imgNome">
         </div>
         <div class="mt-3 w-100" id="div-btn">
@@ -10,3 +30,25 @@
         </div>
     </form>
 </div>
+
+<dir class="cards">
+    <div id="prod" class="row mt-5 w-100">
+        {{#each produtos}}
+        <div class="destaque card col-4 me-2 mb-3" style="max-width: 400px;">
+            <div class="row g-0">
+                <div id="img" class="col-md-4">
+                    <img src="/img/{{imagem_prod}}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h2 class="card-title">{{nome_prod}}</h2>
+                        <p><s>R$ {{valor_prod}}</s><br> por apenas <br><span id="preco">R$ {{valor_prod}}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{/each}}
+    </div>
+</dir>

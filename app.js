@@ -1,6 +1,7 @@
 // FAZENDO IMPORTAÇÕES DOS MÓDULOS
 const express = require('express')
 const app = express();
+const file = require('express-fileupload');
 const mysql = require('mysql2');
 const hbs = require('express-handlebars');
 const bodyParser = require('body-parser');
@@ -17,7 +18,10 @@ const conexao = mysql.createConnection({
 conexao.connect((erro) => {
     if (erro) throw erro;
     console.log("Conectado com sucesso!");
-})
+});
+// CONFIGURANDO O FILEUPLOAD
+
+app.use(file());
 
 // CONFIGURAÇÃO DO PUBLIC E DO BOOTSTRAP
 app.use(express.static('./public'));
@@ -34,21 +38,31 @@ app.set('views', './views');
 
 // ROTAS
 app.get('/', (req, res) => {
-    res.render('inicio')
+    const selecionar = 'SELECT * FROM produtos';
+    conexao.query(selecionar, (erro, sucesso) => {
+        if (erro) throw erro;
+        if (sucesso.length !== 0) {
+            res.render('inicio', { produtos: sucesso });
+        } else {
+            res.render('inicio');
+        }
+    })
 })
 
 app.post('/cadastrar', (req, res) => {
     const dados = {
         nomeProduto: req.body.nomeProduto,
         valorProduto: req.body.valorProduto,
-        imgNome: req.body.imgNome
+        imgNome: req.files.imgNome.name
     }
-
     console.log(dados);
 
+    req.files.imgNome.mv(`${__dirname}/public/img/${dados.imgNome}`);
+
+    const query = "INSERT INTO produtos VALUES (?,?,?,?)";
     const vet = Array(null, dados.nomeProduto, dados.valorProduto, dados.imgNome);
 
-    conexao.query("INSERT INTO produtos VALUES (?,?,?,?)", vet, (erro, result) => {
+    conexao.query(query, vet, (erro, result) => {
         if (erro) {
             console.error("Houve um erro: " + erro);
         } else {

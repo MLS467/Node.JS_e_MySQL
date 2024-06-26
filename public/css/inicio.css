@@ -4,6 +4,23 @@
     padding: 0;
 }
 
+body {
+    height: auto;
+}
+
+.destaque {
+    cursor: pointer;
+}
+
+.destaque:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    /* animation: lightOn 2s infinite alternate; */
+}
+
+#container {
+    margin-top: 15%;
+}
+
 #div-btn {
     width: 100%;
     display: flex;
@@ -22,4 +39,38 @@
     height: 150px;
     justify-content: space-between;
     flex-direction: column;
+}
+
+#preco {
+    font-size: 25px;
+    color: green;
+    font-weight: bold;
+}
+
+s {
+    color: red;
+}
+
+.borda {
+    border: 1px solid red;
+}
+
+#prod {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.cards {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+#img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

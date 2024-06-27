@@ -1,0 +1,21 @@
+{{#each produtos}}
+<div class="container-fluid" id="containerEdit">
+    <div>
+        <form action="/atualizar" method="post" enctype="multipart/form-data" class="w-100">
+            <div id="divImg">
+                <img id="imgEdit" src="/img/{{imagem_prod}}" alt="">
+            </div>
+            <div class="row" id="divPai">
+                <input type="hidden" name="codigo_prod" value="{{codigo_prod}}">
+                <input type="text" class="form-control" name="nomeProduto" value="{{nome_prod}}">
+                <input type="number" class="form-control" step="0.01" value="{{valor_prod}}" name="valorProduto" id="#"
+                    min="0">
+                <input class="form-control" type="file" name="imgNome">
+            </div>
+            <div class="mt-3 div-btn">
+                <button class="btn btn-primary" type="submit">Concluir</button>
+            </div>
+        </form>
+    </div>
+</div>
+{{/each}}

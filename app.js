@@ -34,7 +34,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // CONFIGURAÇÃO DO HANDLEBARS
-app.engine('hbs', hbs.engine({ defaultLayout: 'main', extname: 'hbs' }));
+app.engine('hbs', hbs.engine({
+    defaultLayout: 'main', extname: 'hbs',
+    helpers: {
+        // Função auxiliar para verificar igualdade
+        condicionalIgualdade: function (parametro1, parametro2, options) {
+            return parametro1 === parametro2 ? options.fn(this) : options.inverse(this);
+        }
+    }
+}));
 app.set('view engine', 'hbs');
 app.set('views', './views');
 
@@ -51,45 +59,70 @@ app.get('/', (req, res) => {
     })
 })
 
-app.post('/cadastrar', (req, res) => {
-    const dados = {
-        nomeProduto: req.body.nomeProduto,
-        valorProduto: req.body.valorProduto,
-        imgNome: req.files.imgNome.name
-    }
-    console.log(dados);
+app.get('/:situacao', (req, res) => {
+    const selecionar = 'SELECT * FROM produtos';
+    conexao.query(selecionar, (erro, sucesso) => {
+        if (erro) throw erro;
+        if (sucesso.length !== 0) {
 
-    req.files.imgNome.mv(`${__dirname}/public/img/${dados.imgNome}`);
 
-    const query = "INSERT INTO produtos VALUES (?,?,?,?)";
-    const vet = Array(null, dados.nomeProduto, dados.valorProduto, dados.imgNome);
-
-    conexao.query(query, vet, (erro, result) => {
-        if (erro) {
-            console.error("Houve um erro: " + erro);
-        } else {
-            console.log("Cadastro realizado!");
+            console.log()
+            res.render('inicio', { produtos: sucesso, situacao: req.params.situacao });
         }
-    });
+    })
+})
 
-    res.redirect('/');
+app.post('/cadastrar', (req, res) => {
+    try {
+        const dados = {
+            nomeProduto: req.body.nomeProduto,
+            valorProduto: req.body.valorProduto,
+            imgNome: req.files.imgNome.name
+        }
+        console.log(dados);
+        if (dados.nomeProduto == '' || dados.imgNome == '' || dados.valorProduto == '' || isNaN(dados.valorProduto)) {
+            console.log("cadastro não realizado!");
+            res.redirect('/cadastro_erro');
+        } else {
+            req.files.imgNome.mv(`${__dirname}/public/img/${dados.imgNome}`);
+
+            const query = "INSERT INTO produtos VALUES (?,?,?,?)";
+            const vet = Array(null, dados.nomeProduto, dados.valorProduto, dados.imgNome);
+
+            conexao.query(query, vet, (erro, result) => {
+                if (erro) {
+                    console.error("Houve um erro: " + erro);
+                } else {
+                    console.log("Cadastro realizado!");
+                }
+            });
+            res.redirect('/cadastro_ok');
+        }
+    } catch (erro) {
+        console.log("cadastro não realizado!");
+        res.redirect('/cadastro_erro');
+    }
 })
 
 app.get('/deletar/:cod&:imagem', (req, res) => {
-    const cod = req.params.cod;
-    const imagem = req.params.imagem;
+    try {
+        const cod = req.params.cod;
+        const imagem = req.params.imagem;
 
-    const sql = `DELETE FROM produtos WHERE codigo_prod = ?`;
+        const sql = `DELETE FROM produtos WHERE codigo_prod = ?`;
 
-    conexao.query(sql, cod, (erro, sucesso) => {
-        if (erro) throw erro;
-        console.log(sucesso);
-        fs.unlink(`${__dirname}/public/img/${imagem}`, (erro) => {
+        conexao.query(sql, cod, (erro, sucesso) => {
             if (erro) throw erro;
-        });
-        console.log("Arquivo removido com sucesso!");
-    })
-    res.redirect('/');
+            console.log(sucesso);
+            fs.unlink(`${__dirname}/public/img/${imagem}`, (erro) => {
+                if (erro) throw erro;
+            });
+            console.log("Arquivo removido com sucesso!");
+        })
+        res.redirect('/deletado_ok');
+    } catch (error) {
+        res.redirect('/deletado_erro');
+    }
 })
 
 
@@ -105,25 +138,54 @@ app.get('/editar/:cod', (req, res) => {
 
 
 app.post('/atualizar', (req, res) => {
-    const dados = {
-        codigo: req.body.codigo_prod,
-        nome: req.body.nomeProduto,
-        valor: req.body.valorProduto,
-        img: req.files.imgNome.name
+    try {
+
+        let dados = {
+            codigo: req.body.codigo_prod,
+            nome: req.body.nomeProduto,
+            valor: req.body.valorProduto,
+            imgAtual: req.body.imagem_prod,
+        }
+
+        if (dados.nome == '' || dados.imgAtual == '' || dados.valor == '' || isNaN(dados.valor)) {
+            res.redirect('/atualizado_erro');
+        } else {
+            let vet = null;
+            let sql = null;
+
+            try {
+                dados.img = req.files.imgNome.name;
+                fs.unlink(`${__dirname}/public/img/${dados.imgAtual}`, (erro) => {
+                    if (erro) throw erro;
+                });
+
+                sql = `UPDATE produtos SET nome_prod=?, valor_prod = ?, imagem_prod=? WHERE codigo_prod = ?`;
+
+                vet = [dados.nome, dados.valor, dados.img, dados.codigo];
+
+                req.files.imgNome.mv(`${__dirname}/public/img/${dados.img}`);
+
+                console.log('Imagem será alterada!');
+            } catch (erro) {
+                sql = `UPDATE produtos SET nome_prod=?, valor_prod = ? WHERE codigo_prod = ?`;
+
+                vet = [dados.nome, dados.valor, dados.codigo];
+
+                console.log('Imagem não será alterada!');
+            }
+
+            conexao.query(sql, vet, (error) => {
+                if (error) throw error;
+                console.log("Atualizado com sucesso!");
+                res.redirect('/atualizado_ok');
+            })
+
+
+        }
+
+    } catch (error) {
+        res.redirect('/atualizado_erro');
     }
-
-    const sql = `UPDATE produtos SET nome_prod=?, valor_prod = ?, imagem_prod=? WHERE codigo_prod = ?`;
-    const vet = Array(dados.nome, dados.valor, dados.img, dados.codigo);
-
-    req.files.imgNome.mv(`${__dirname}/public/img/${dados.img}`);
-
-    conexao.query(sql, vet, (error) => {
-        if (error) throw error;
-        console.log("Atualizado com sucesso!");
-        res.redirect('/');
-    })
-
-
 })
 
 // SERVIDOR 

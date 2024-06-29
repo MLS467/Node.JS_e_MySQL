@@ -67,6 +67,19 @@ body {
     /* border: 1px solid red; */
 }
 
+#divPaiCards {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.alert {
+    font-size: 25px;
+    font: weight 200px;
+    font-style: italic;
+    text-align: center;
+}
+
 .div-btn {
     /* background-color: red; */
     width: 100%;
@@ -102,18 +115,22 @@ s {
     border: 1px solid red;
 }
 
+.card-title {
+    font-size: 25px;
+}
+
 #prod {
     width: 100%;
     display: flex;
     justify-content: space-around;
+    flex-direction: row;
 
 }
 
 .cards {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-
 }
 
 #img {

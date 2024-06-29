@@ -1,0 +1,27 @@
+<div id="divPaiCards">
+    <div class="cards">
+        <div id="prod" class="row mt-5">
+            {{#each produtos}}
+            <div class="destaque card col-4  mb-3" style="max-width: 400px;">
+                <div class="row g-0">
+                    <div id="img" class="col-md-4">
+                        <img src="/img/{{imagem_prod}}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-6">
+                        <div class="card-body">
+                            <h2 class="card-title text-start">{{nome_prod}}</h2>
+                            <p><s>R$ {{valor_prod}}</s><br> por apenas <br><span id="preco">R$ {{valor_prod}}</span>
+                            </p>
+                            <div class="w-100 text-start" id="btnAcoes">
+                                <a href="/editar/{{codigo_prod}}" class="btn btn-warning">Editar</a>
+                                <a href="/deletar/{{codigo_prod}}&{{imagem_prod}}" class="btn btn-danger">Excluir</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{/each}}
+        </div>
+    </div>
+</div>

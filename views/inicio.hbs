@@ -1,95 +1,31 @@
-<div class="container-fluid text-dark fixed-top bg-dark">
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <svg class="bi me-2" width="40" height="32">
-                <use xlink:href="#bootstrap"></use>
-            </svg>
-            <span class="fs-4 text-light">Bugigangas</span>
-        </a>
-
-        <ul class="nav nav-pills">
-            <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-light">Features</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-light">Pricing</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-light">FAQs</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-light">About</a></li>
-        </ul>
-    </header>
-</div>
-
 {{!-- Carrossel --}}
-<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-            aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-            aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-            aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner w-100">
-        <div class="carousel-item ajusImg active">
-            <img src="img/banner1.png" class="w-100" height="600" alt="...">
-        </div>
-        <div class="carousel-item ajusImg">
-            <img src="img/banner2.jpg" height="600" alt="...">
-        </div>
-        <div class="carousel-item ajusImg">
-            <img src="img/banner1.jpg" height="600" alt="...">
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
+{{>carrossel}}
 
 {{!-- formulario --}}
-
-
-<div class="container col-4 offset-4" id="container">
-    <form action="/cadastrar" method="post" enctype="multipart/form-data" class="w-100">
-        <div class="row" id="divPai">
-            <input type="text" class="form-control" name="nomeProduto" id="#" placeholder="Nome do Produto">
-            <input type="number" class="form-control" step="0.01" name="valorProduto" id="#" min="0"
-                placeholder="Valor do Produto">
-            <input class="form-control" type="file" name="imgNome">
-        </div>
-        <div class="mt-3 w-100 div-btn">
-            <input class="btn btn-primary" id="btn" type="submit" value="Enviar">
-        </div>
-    </form>
-</div>
-
-{{!-- Cards --}}
-<dir class="cards">
-    <div id="prod" class="row mt-5 w-100">
-        {{#each produtos}}
-        <div class="destaque card col-4 me-2 mb-3" style="max-width: 400px;">
-            <div class="row g-0">
-                <div id="img" class="col-md-4">
-                    <img src="/img/{{imagem_prod}}" class="img-fluid rounded-start" alt="...">
+<div class="container w-100 ">
+    <div class="row d-flex justify-content-space-around align-items-center">
+        <div class="container col-5" id="container">
+            <form action="/cadastrar" method="post" enctype="multipart/form-data" class="w-100">
+                <h2 class="text-light text-center w-100 mb-2">Cadastro de produtos</h2>
+                <div class="row" id="divPai">
+                    <input type="text" class="form-control" name="nomeProduto" id="#" placeholder="Nome do Produto">
+                    <input type="number" class="form-control" step="0.01" name="valorProduto" id="#" min="0"
+                        placeholder="Valor do Produto">
+                    <input class="form-control" type="file" name="imgNome">
                 </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h2 class="card-title">{{nome_prod}}</h2>
-                        <p><s>R$ {{valor_prod}}</s><br> por apenas <br><span id="preco">R$ {{valor_prod}}</span>
-                        </p>
-                        <div class="w-100 text-start" id="btnAcoes">
-                            <a href="/editar/{{codigo_prod}}" class="btn btn-warning">Editar</a>
-                            <a href="/deletar/{{codigo_prod}}&{{imagem_prod}}" class="btn btn-danger">Excluir</a>
-                        </div>
-                    </div>
+                <div class="mt-3 w-100 div-btn">
+                    <input class="btn btn-primary w-50" id="btn" type="submit" value="Enviar">
                 </div>
-            </div>
+            </form>
         </div>
 
-        {{/each}}
+        {{!-- Mensagens de sussesso e erro --}}
+        <div class="w-50">
+
+            {{>mensagens}}
+
+        </div>
     </div>
-</dir>
+</div>
+{{!-- Cards --}}
+{{>cards}}

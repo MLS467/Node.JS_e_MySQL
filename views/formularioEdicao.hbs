@@ -7,13 +7,15 @@
             </div>
             <div class="row" id="divPai">
                 <input type="hidden" name="codigo_prod" value="{{codigo_prod}}">
+                <input type="hidden" name="imagem_prod" value="{{imagem_prod}}">
                 <input type="text" class="form-control" name="nomeProduto" value="{{nome_prod}}">
                 <input type="number" class="form-control" step="0.01" value="{{valor_prod}}" name="valorProduto" id="#"
                     min="0">
                 <input class="form-control" type="file" name="imgNome">
             </div>
             <div class="mt-3 div-btn">
-                <button class="btn btn-primary" type="submit">Concluir</button>
+                <button class="btn btn-primary me-2" type="submit">Concluir</button>
+                <a href="/" class="btn btn-warning" type="submit">Cancelar</a>
             </div>
         </form>
     </div>

@@ -1,0 +1,36 @@
+{{#condicionalIgualdade situacao 'cadastro_ok'}}
+<div class="alert alert-success" role="alert">
+    Produto cadastrado com sucesso!
+</div>
+{{/condicionalIgualdade}}
+
+{{#condicionalIgualdade situacao 'cadastro_erro'}}
+<div class="alert alert-danger mt-3 text-center" role="alert">
+    Produto não cadastrado!
+</div>
+{{/condicionalIgualdade}}
+
+
+{{#condicionalIgualdade situacao 'deletado_ok'}}
+<div class="alert alert-success" role="alert">
+    Produto deletado com sucesso!
+</div>
+{{/condicionalIgualdade}}
+
+{{#condicionalIgualdade situacao 'deletado_erro'}}
+<div class="alert alert-danger mt-3 text-center" role="alert">
+    Produto não deletado!
+</div>
+{{/condicionalIgualdade}}
+
+{{#condicionalIgualdade situacao 'atualizado_ok'}}
+<div class="alert alert-success" role="alert">
+    Produto Atualizado com sucesso!
+</div>
+{{/condicionalIgualdade}}
+
+{{#condicionalIgualdade situacao 'atualizado_erro'}}
+<div class="alert alert-danger mt-3 text-center" role="alert">
+    Produto não atualizado!
+</div>
+{{/condicionalIgualdade}}
